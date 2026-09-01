@@ -12,7 +12,9 @@ function Navbar() {
         <Link to="/"className="font-medium text-gray-600 transition duration-200 hover:text-blue-600">
           Home
         </Link>
-
+        <Link to="/product"className="font-medium text-gray-600 transition duration-200 hover:text-blue-600">
+          Product
+        </Link>
         <Link to="/contact" className="font-medium text-gray-600 transition duration-200 hover:text-blue-600">
           Contact
         </Link>
