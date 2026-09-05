@@ -1,5 +1,4 @@
 import React from 'react'
-
 function Footer() {
   return (
     <>
@@ -100,7 +99,7 @@ function Footer() {
           </li>
 
           <li>
-            <a href="#" class="transition hover:text-green-500">
+            <a href="" class="transition hover:text-green-500">
               Track Order
             </a>
           </li>
