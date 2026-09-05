@@ -8,22 +8,6 @@ import Notfound from './components/Notfound'
 import Footer from './components/Footer'
 import { Routes,Route } from 'react-router-dom'
 function App() {
-
-      const [product,setproduct]=useState([]);
-
-      useEffect(()=>{
-
-        async function getdata(){
-          const data=await fetch("http://localhost:3000/api/products");
-          const responsedata= await data.json();
-          setproduct(responsedata.products);
-          console.log(product);
-        }
-        getdata()
-
-      },[])
-
-
   return (
     <>
       <Navbar/>
