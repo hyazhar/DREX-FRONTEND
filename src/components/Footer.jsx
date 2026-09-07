@@ -156,11 +156,11 @@ function Footer() {
       </p>
 
       <div className="flex flex-wrap gap-5">
-        <a href="#" className="text-gray-500 transition hover:text-green-500">
+        <a href="/privacy-policy" className="text-gray-500 transition hover:text-green-500">
           Privacy Policy
         </a>
 
-        <a href="#" className="text-gray-500 transition hover:text-green-500">
+        <a href="/terms-conditions" className="text-gray-500 transition hover:text-green-500">
           Terms & Conditions
         </a>
 
