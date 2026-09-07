@@ -93,31 +93,31 @@ function Footer() {
 
         <ul className="space-y-3 text-sm">
           <li>
-            <a href="#" className="transition hover:text-green-500">
+            <a href="/contact" className="transition hover:text-green-500">
               Contact Us
             </a>
           </li>
 
           <li>
-            <a href="" className="transition hover:text-green-500">
+            <a href="/trackOrder" className="transition hover:text-green-500">
               Track Order
             </a>
           </li>
 
           <li>
-            <a href="#" className="transition hover:text-green-500">
+            <a href="/returnRefunds" className="transition hover:text-green-500">
               Returns & Refunds
             </a>
           </li>
 
           <li>
-            <a href="#" className="transition hover:text-green-500">
+            <a href="/shippingPolicy" className="transition hover:text-green-500">
               Shipping Policy
             </a>
           </li>
 
           <li>
-            <a href="#" className="transition hover:text-green-500">
+            <a href="/FAQ" className="transition hover:text-green-500">
               FAQ
             </a>
           </li>

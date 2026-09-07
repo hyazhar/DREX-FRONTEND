@@ -7,6 +7,10 @@ import About from './components/About'
 import Notfound from './components/Notfound'
 import Footer from './components/Footer'
 import { Routes,Route } from 'react-router-dom'
+import TrackOrder from './components/TrackOrder'
+import ReturnsRefunds from './components/ReturnsRefunds'
+import ShippingPolicy from './components/ShippingPolicy'
+import FAQ from './components/FAQ'
 function App() {
   return (
     <>
@@ -16,6 +20,10 @@ function App() {
         <Route path='/product' element={<Product/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/about' element={<About/>}></Route>
+        <Route path='/trackOrder' element={<TrackOrder/>}></Route>
+        <Route path='/returnRefunds' element={<ReturnsRefunds/>}></Route>
+        <Route path='/shippingPolicy' element={<ShippingPolicy/>}></Route>
+        <Route path='/FAQ' element={<FAQ/>}></Route>
         <Route path='*' element={<Notfound/>}></Route>
       </Routes>
       <Footer/>
