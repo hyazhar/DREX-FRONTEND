@@ -13,6 +13,7 @@ import ShippingPolicy from './components/ShippingPolicy'
 import FAQ from './components/FAQ'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import TermsConditions from './components/TermsConditions'
+import SiteMap from './components/SiteMap'
 function App() {
   return (
     <>
@@ -28,6 +29,7 @@ function App() {
         <Route path='/FAQ' element={<FAQ/>}></Route>
         <Route path='/privacy-policy' element={<PrivacyPolicy/>}></Route>
         <Route path='/terms-conditions' element={<TermsConditions/>}></Route>
+        <Route path='/site-map' element={<SiteMap/>}></Route>
         <Route path='*' element={<Notfound/>}></Route>
       </Routes>
       <Footer/>

@@ -164,7 +164,7 @@ function Footer() {
           Terms & Conditions
         </a>
 
-        <a href="#" className="text-gray-500 transition hover:text-green-500">
+        <a href="/site-map" className="text-gray-500 transition hover:text-green-500">
           Sitemap
         </a>
       </div>
