@@ -20,28 +20,31 @@ function Footer() {
 
         <div className="mt-6 flex gap-4">
           <a
-            href="#"
+            href="https://www.linkedin.com/azzharr/"
+            target='blank'
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 transition hover:bg-green-500 hover:text-white"
           >
             <i className="fa-brands fa-linkedin"></i>
           </a>
 
           <a
-            href="#"
+            href="https://www.instagram.com/hyazzharr/"
+            target='blank'
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 transition hover:bg-green-500 hover:text-white"
           >
             <i className="fa-brands fa-instagram"></i>
           </a>
 
-          <a
+          {/* <a
             href="#"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 transition hover:bg-green-500 hover:text-white"
           >
             <i className="fa-brands fa-x-twitter"></i>
-          </a>
+          </a> */}
 
           <a
-            href="#"
+            href="https://www.youtube.com/@hyazzharr"
+            target='blank'
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 transition hover:bg-green-500 hover:text-white"
           >
             <i className="fa-brands fa-youtube"></i>
