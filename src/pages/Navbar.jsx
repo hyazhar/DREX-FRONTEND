@@ -74,7 +74,7 @@ function Navbar() {
             </Link>
 
             <Link
-              to="/product"
+              to="/products"
               className="font-medium text-gray-600 transition duration-200 hover:text-blue-600"
             >
               Product

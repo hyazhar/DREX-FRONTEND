@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Routes,Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import Product from './components/Product'
-import Contact from './components/Contact'
-import About from './components/About'
-import Notfound from './components/Notfound'
-import Footer from './components/Footer'
-import TrackOrder from './components/TrackOrder'
-import ReturnsRefunds from './components/ReturnsRefunds'
-import ShippingPolicy from './components/ShippingPolicy'
-import FAQ from './components/FAQ'
-import PrivacyPolicy from './components/PrivacyPolicy'
-import TermsConditions from './components/TermsConditions'
-import SiteMap from './components/SiteMap'
+import Navbar from './pages/Navbar'
+import Home from './pages/Home'
+import Product from './pages/Product'
+import Contact from './pages/Contact'
+import About from './pages/About'
+import Notfound from './pages/Notfound'
+import Footer from './pages/Footer'
+import TrackOrder from './pages/TrackOrder'
+import ReturnsRefunds from './pages/ReturnsRefunds'
+import ShippingPolicy from './pages/ShippingPolicy'
+import FAQ from './pages/FAQ'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsConditions from './pages/TermsConditions'
+import SiteMap from './pages/SiteMap'
 function App() {
   return (
     <>
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
-        <Route path='/product' element={<Product/>}></Route>
+        <Route path='/products' element={<Product/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/about' element={<About/>}></Route>
         <Route path='/trackOrder' element={<TrackOrder/>}></Route>

@@ -35,7 +35,7 @@ function Hero() {
 
               {/* Shop Now */}
               <button
-                onClick={() => navigate("/product")}
+                onClick={() => navigate("/products")}
                 className="bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all duration-300 px-7 py-3 rounded-lg font-semibold shadow-lg shadow-blue-600/20"
               >
                 Shop Now →
