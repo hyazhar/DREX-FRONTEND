@@ -14,6 +14,7 @@ import FAQ from './pages/FAQ'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsConditions from './pages/TermsConditions'
 import SiteMap from './pages/SiteMap'
+import ProductDetails from './pages/ProductDetails'
 function App() {
   return (
     <>
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/products' element={<Product/>}></Route>
+        <Route path='/products/:id' element={<ProductDetails/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/about' element={<About/>}></Route>
         <Route path='/trackOrder' element={<TrackOrder/>}></Route>
