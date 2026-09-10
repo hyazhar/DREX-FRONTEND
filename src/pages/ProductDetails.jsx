@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import productApi from '../services/productApi'
 import Loader from './Loader';
+
 function ProductDetails() {
   const { id } = useParams();
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function getProduct() {
+ useEffect(() => {
+    async function fetchProducts() {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-        const data = await response.json();
+        const data = await productApi.getProductById(id)
         setProduct(data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
     }
-    getProduct();
+    fetchProducts();
   }, [id]);
 
   if (loading) {

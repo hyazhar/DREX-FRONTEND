@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import getdata from "../services/productApi";
+import productApi from "../services/productApi";
 import Loader from "./Loader";
 function Product() {
   const [products, setProducts] = useState([]);
@@ -9,15 +9,16 @@ function Product() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const data = await getdata();
+        const data = await productApi.getdata();
         setProducts(data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.error("Error fetching products:", error);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     }
-
     fetchProducts();
   }, []);
 
