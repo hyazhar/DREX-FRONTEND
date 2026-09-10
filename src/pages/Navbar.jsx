@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, TrendingUp, ShoppingBag } from "lucide-react";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,6 +41,7 @@ function Navbar() {
             className="hidden flex-1 max-w-md md:flex"
           >
             <div className="flex w-full items-center overflow-hidden rounded-full border border-gray-300 bg-gray-50 transition focus-within:border-blue-500 focus-within:bg-white">
+
               <Search
                 size={20}
                 className="ml-4 text-gray-400"
@@ -66,32 +67,31 @@ function Navbar() {
           {/* Desktop Menu + Auth */}
           <div className="hidden items-center gap-6 md:flex">
 
+            {/* Trending */}
             <Link
-              to="/"
-              className="font-medium text-gray-600 transition duration-200 hover:text-blue-600"
+              to="/trending"
+              className="flex items-center gap-1.5 font-medium text-gray-600 transition duration-200 hover:text-blue-600"
             >
-              Home
+              <TrendingUp size={18} />
+              Trending
             </Link>
 
+            {/* New Collections */}
             <Link
-              to="/products"
-              className="font-medium text-gray-600 transition duration-200 hover:text-blue-600"
+              to="/collections"
+              className="flex items-center gap-1.5 font-medium text-gray-600 transition duration-200 hover:text-blue-600"
             >
-              Product
+              <TrendingUp size={18} />
+              New Collections
             </Link>
 
+            {/* Bag */}
             <Link
-              to="/contact"
-              className="font-medium text-gray-600 transition duration-200 hover:text-blue-600"
+              to="/bag"
+              className="flex items-center gap-1.5 font-medium text-gray-600 transition duration-200 hover:text-blue-600"
+              aria-label="Shopping Bag"
             >
-              Contact
-            </Link>
-
-            <Link
-              to="/about"
-              className="font-medium text-gray-600 transition duration-200 hover:text-blue-600"
-            >
-              About
+              <ShoppingBag size={21} />
             </Link>
 
             {/* Login */}
@@ -219,36 +219,34 @@ function Navbar() {
         {/* Side Menu Links */}
         <div className="flex flex-col px-6">
 
+          {/* Trending */}
           <Link
-            to="/"
+            to="/trending"
             onClick={closeMenu}
-            className="border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
+            className="flex items-center gap-3 border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
           >
-            Home
+            <TrendingUp size={20} />
+            Trending
           </Link>
 
+          {/* New Collections */}
           <Link
-            to="/product"
+            to="/collections"
             onClick={closeMenu}
-            className="border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
+            className="flex items-center gap-3 border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
           >
-            Product
+            <TrendingUp size={20} />
+            New Collections
           </Link>
 
+          {/* Bag */}
           <Link
-            to="/contact"
+            to="/bag"
             onClick={closeMenu}
-            className="border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
+            className="flex items-center gap-3 border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
           >
-            Contact
-          </Link>
-
-          <Link
-            to="/about"
-            onClick={closeMenu}
-            className="border-b border-gray-100 py-4 font-medium text-gray-700 transition hover:pl-2 hover:text-blue-600"
-          >
-            About
+            <ShoppingBag size={20} />
+            Bag
           </Link>
 
         </div>

@@ -100,7 +100,11 @@ function Footer() {
               Contact Us
             </a>
           </li>
-
+          <li>
+            <a href="/about" className="transition hover:text-green-500">
+              About Us
+            </a>
+          </li>
           <li>
             <a href="/trackOrder" className="transition hover:text-green-500">
               Track Order
