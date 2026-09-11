@@ -3,7 +3,6 @@ async function getdata() {
   const getproduct = await product.json();
   return getproduct;
 }
-
 async function getProductById(id) {
   const response = await fetch(
     `https://fakestoreapi.com/products/${id}`

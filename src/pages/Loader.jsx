@@ -1,7 +1,7 @@
 import React from "react";
 function Loader() {
   return (
-    <div className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center bg-white">
+    <div className="flex min-h-[400px] items-center justify-center">
 
       <div className="flex flex-col items-center">
 
