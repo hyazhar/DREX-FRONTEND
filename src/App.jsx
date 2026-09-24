@@ -15,9 +15,11 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsConditions from './pages/TermsConditions'
 import SiteMap from './pages/SiteMap'
 import ProductDetails from './pages/ProductDetails'
+import ScrollToTop from './ScrollToTop';
 function App() {
   return (
     <>
+      <ScrollToTop/>
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
