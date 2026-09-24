@@ -25,9 +25,9 @@ function App() {
         <Route path='/products/:id' element={<ProductDetails/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/about' element={<About/>}></Route>
-        <Route path='/trackOrder' element={<TrackOrder/>}></Route>
-        <Route path='/returnRefunds' element={<ReturnsRefunds/>}></Route>
-        <Route path='/shippingPolicy' element={<ShippingPolicy/>}></Route>
+        <Route path='/track-order' element={<TrackOrder/>}></Route>
+        <Route path='/returns-refunds' element={<ReturnsRefunds/>}></Route>
+        <Route path='/shipping-policy' element={<ShippingPolicy/>}></Route>
         <Route path='/FAQ' element={<FAQ/>}></Route>
         <Route path='/privacy-policy' element={<PrivacyPolicy/>}></Route>
         <Route path='/terms-conditions' element={<TermsConditions/>}></Route>
