@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import productApi from "../services/productApi";
-import Loader from "./components/Loader";
+import Loader from "../components/Loader";
 function Product() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
