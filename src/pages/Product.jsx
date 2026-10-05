@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import productApi from "../services/productApi";
 import Loader from "../components/Loader";
+import ErrorMessage from '../components/ErrorMessage'
+
 function Product() {
   const [products, setProducts] = useState([]);
+  const [error,setError]=useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,6 +16,7 @@ function Product() {
         setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setError("Unable to load products.Please Try Again");
       } finally {
         setLoading(false);
       }
@@ -23,7 +27,9 @@ function Product() {
   if (loading) {
     return <Loader />;
   }
-
+  if(error){
+    return <ErrorMessage message={error}></ErrorMessage>
+  }
   return (
     <div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
