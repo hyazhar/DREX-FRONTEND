@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import productApi from "../services/productApi";
-import Loader from "./Loader";
+import Loader from "./components/Loader";
 function Product() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,12 +10,10 @@ function Product() {
     async function fetchProducts() {
       try {
         const data = await productApi.getdata();
-        setProducts(data);
-      } 
-      catch (error) {
+        setProducts(data.products);
+      } catch (error) {
         console.error("Error fetching products:", error);
-      } 
-      finally {
+      } finally {
         setLoading(false);
       }
     }
@@ -27,80 +25,69 @@ function Product() {
   }
 
   return (
+    <div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {products.map((product) => (
+        <Link
+          key={product._id}
+          to={`/products/${product._id}`}
+          className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+        >
+          {/* Product Image */}
+          <div className="relative flex h-64 items-center justify-center overflow-hidden bg-gray-50 p-6">
+            {/* Featured Badge */}
+            {product.isFeatured && (
+              <span className="absolute left-4 top-4 z-10 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700 shadow-sm">
+                Featured
+              </span>
+            )}
 
-<div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-  {products.map((product) => (
-    <Link
-      key={product.id}
-      to={`/products/${product.id}`}
-      className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-    >
-      {/* Product Image */}
-      <div className="relative flex h-64 items-center justify-center overflow-hidden bg-gray-50 p-6">
-
-        {/* Category Badge */}
-        <span className="absolute left-4 top-4 z-10 rounded-full bg-white px-3 py-1 text-xs font-semibold capitalize text-gray-700 shadow-sm">
-          {product.category}
-        </span>
-
-        {/* Image */}
-        <img
-          src={product.image}
-          alt={product.title}
-          className="h-full w-full object-contain transition duration-500 group-hover:scale-110"
-        />
-
-      </div>
-
-      {/* Product Details */}
-      <div className="p-5">
-
-        {/* Rating */}
-        <div className="mb-2 flex items-center gap-1">
-          <span className="text-sm text-yellow-400">
-            ★
-          </span>
-
-          <span className="text-sm font-medium text-gray-700">
-            {product.rating?.rate || "4.5"}
-          </span>
-
-          <span className="text-xs text-gray-400">
-            ({product.rating?.count || "100"})
-          </span>
-        </div>
-
-        {/* Product Title */}
-        <h2 className="line-clamp-2 min-h-[48px] text-base font-semibold leading-6 text-gray-800 transition-colors group-hover:text-blue-600">
-          {product.title}
-        </h2>
-
-        {/* Price + Button */}
-        <div className="mt-4 flex items-center justify-between">
-
-          <div>
-            <p className="text-xl font-bold text-gray-900">
-              ${product.price}
-            </p>
-
-            <p className="text-xs text-gray-400">
-              Inclusive of all taxes
-            </p>
+            {/* Product Image */}
+            <div className="text-gray-400">No Image</div>
           </div>
 
-          {/* Add to Bag */}
-          <button
-            onClick={(e) => e.preventDefault()}
-            className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-95"
-          >
-            Add to Bag
-          </button>
+          {/* Product Details */}
+          <div className="p-5">
+            {/* Category */}
+            <div className="mb-2 flex items-center gap-2">
+              <span className="text-xs font-semibold uppercase text-blue-600">
+                {product.category?.name}
+              </span>
 
-        </div>
-      </div>
-    </Link>
-  ))}
-</div>
+              <span className="text-xs text-gray-400">
+                {product.subCategory}
+              </span>
+            </div>
+
+            {/* Product Brand */}
+            <p className="text-sm text-gray-500">{product.brand}</p>
+
+            {/* Product Name */}
+            <h2 className="mt-1 line-clamp-2 min-h-[48px] text-base font-semibold leading-6 text-gray-800 transition-colors group-hover:text-blue-600">
+              {product.name}
+            </h2>
+
+            {/* Price + Button */}
+            <div className="mt-4 flex items-center justify-between">
+              <div>
+                <p className="text-xl font-bold text-gray-900">
+                  ₹{product.price.toLocaleString("en-IN")}
+                </p>
+
+                <p className="text-xs text-gray-400">Inclusive of all taxes</p>
+              </div>
+
+              {/* Add to Bag */}
+              <button
+                onClick={(e) => e.preventDefault()}
+                className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-95"
+              >
+                Add to Bag
+              </button>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
   );
 }
 

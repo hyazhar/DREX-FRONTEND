@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import productApi from '../services/productApi'
-import Loader from './Loader';
+import Loader from './components/Loader';
 
 function ProductDetails() {
   const { id } = useParams();
