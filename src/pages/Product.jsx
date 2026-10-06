@@ -8,12 +8,15 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [error,setError]=useState("");
   const [loading, setLoading] = useState(true);
-
+  const [currentPage,setCurrentPage]=useState(1);
+  const [totalPages,setTotalPages]=useState(1);
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const data = await productApi.getdata();
+        const data = await productApi.getdata(currentPage);
         setProducts(data.products);
+        setCurrentPage(data.currentPage);
+        setTotalPages(data.totalPages);
       } catch (error) {
         console.error("Error fetching products:", error);
         setError("Unable to load products.Please Try Again");
@@ -22,7 +25,7 @@ function Product() {
       }
     }
     fetchProducts();
-  }, []);
+  }, [currentPage]);
 
   if (loading) {
     return <Loader />;
@@ -31,6 +34,7 @@ function Product() {
     return <ErrorMessage message={error}></ErrorMessage>
   }
   return (
+    <>
     <div className="grid grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <Link
@@ -94,6 +98,30 @@ function Product() {
         </Link>
       ))}
     </div>
+    <div className="flex items-center justify-center gap-4 py-10">
+
+  <button
+    onClick={() => setCurrentPage(currentPage - 1)}
+    disabled={currentPage === 1}
+    className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  <span className="font-medium">
+    Page {currentPage} of {totalPages}
+  </span>
+
+  <button
+    onClick={() => setCurrentPage(currentPage + 1)}
+    disabled={currentPage === totalPages}
+    className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    Next
+  </button>
+
+</div>
+    </>
   );
 }
 

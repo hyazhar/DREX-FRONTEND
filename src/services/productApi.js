@@ -1,5 +1,5 @@
-async function getdata() {
-  const product = await fetch("http://localhost:3000/api/products");
+async function getdata(page=1) {
+  const product = await fetch(`http://localhost:3000/api/products?page=${page}`);
   if(!product.ok){
     throw new Error("Failed to fetch products");
   }
