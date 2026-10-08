@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useSearchParams } from "react-router-dom";
 import productApi from "../services/productApi";
 import Loader from "../components/Loader";
 import ErrorMessage from '../components/ErrorMessage'
@@ -8,14 +8,15 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [error,setError]=useState("");
   const [loading, setLoading] = useState(true);
-  const [currentPage,setCurrentPage]=useState(1);
+  const [searchParams, setSearchParams]=useSearchParams();
+  const currentPage=Number(searchParams.get("page")) ||1;
+
   const [totalPages,setTotalPages]=useState(1);
   useEffect(() => {
     async function fetchProducts() {
       try {
         const data = await productApi.getdata(currentPage);
         setProducts(data.products);
-        setCurrentPage(data.currentPage);
         setTotalPages(data.totalPages);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -101,7 +102,7 @@ function Product() {
     <div className="flex items-center justify-center gap-4 py-10">
 
   <button
-    onClick={() => setCurrentPage(currentPage - 1)}
+    onClick={() => setSearchParams({ page: currentPage - 1 })}
     disabled={currentPage === 1}
     className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
   >
@@ -113,7 +114,7 @@ function Product() {
   </span>
 
   <button
-    onClick={() => setCurrentPage(currentPage + 1)}
+    onClick={() => setSearchParams({ page: currentPage + 1 })}
     disabled={currentPage === totalPages}
     className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
   >
