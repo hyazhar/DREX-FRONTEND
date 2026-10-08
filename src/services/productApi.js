@@ -7,15 +7,14 @@ async function getdata(page=1) {
   return getproduct;
 }
 async function getProductById(id) {
-  const response = await fetch(
-    `https://fakestoreapi.com/products/${id}`
-  );
+  const product = await fetch(`http://localhost:3000/api/products/${id}`);
 
-  if (!response.ok) {
+  if (!product.ok) {
     throw new Error("Failed to fetch product");
   }
 
-  return await response.json();
+  const data = await product.json();
+  return data;
 }
 export default {getdata,getProductById};
 

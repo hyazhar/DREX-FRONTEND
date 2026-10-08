@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import productApi from '../services/productApi'
 import Loader from '../components/Loader';
+import ErrorMessage from '../components/ErrorMessage';
 
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [error,setError]=useState("");
  useEffect(() => {
     async function fetchProducts() {
       try {
         const data = await productApi.getProductById(id)
-        setProduct(data);
+        setProduct(data.product);
+        console.log(data.product);
       } catch (error) {
         console.error(error);
+        setError("Unable to load products.Please Try Again");
       } finally {
         setLoading(false);
       }
@@ -26,53 +29,42 @@ function ProductDetails() {
     return <Loader/>;
   }
 
-  if (!product) {
-    return <div>Product not found</div>;
+  if(error){
+    return <ErrorMessage message={error}></ErrorMessage>
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
-
+      <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="grid gap-10 md:grid-cols-2">
 
         {/* Product Image */}
         <div className="flex h-[500px] items-center justify-center rounded-2xl bg-gray-50 p-10">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="max-h-full max-w-full object-contain"
-          />
+          <div className="text-gray-400">
+            Product Image
+          </div>
         </div>
 
         {/* Product Information */}
         <div className="flex flex-col justify-center">
 
+          {/* Category */}
           <span className="mb-4 w-fit rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold capitalize text-blue-600">
-            {product.category}
+            {product.category?.name}
           </span>
 
+          {/* Product Name */}
           <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            {product.title}
+            {product.name}
           </h1>
 
-          {/* Rating */}
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-yellow-400">
-              ★
-            </span>
-
-            <span className="font-medium">
-              {product.rating?.rate}
-            </span>
-
-            <span className="text-gray-400">
-              ({product.rating?.count} reviews)
-            </span>
-          </div>
+          {/* Brand */}
+          <p className="mt-3 text-gray-500">
+            Brand: <span className="font-medium">{product.brand}</span>
+          </p>
 
           {/* Price */}
           <p className="mt-6 text-3xl font-bold text-blue-600">
-            ${product.price}
+            ₹{product.price?.toLocaleString("en-IN")}
           </p>
 
           {/* Description */}
@@ -80,7 +72,25 @@ function ProductDetails() {
             {product.description}
           </p>
 
-          {/* Add to Bag */}
+          {/* Product Information */}
+          <div className="mt-6 space-y-2 text-gray-600">
+            <p>
+              <span className="font-semibold">Sub Category:</span>{" "}
+              {product.subCategory}
+            </p>
+
+            <p>
+              <span className="font-semibold">Stock:</span>{" "}
+              {product.stock}
+            </p>
+
+            <p>
+              <span className="font-semibold">Featured:</span>{" "}
+              {product.isFeatured ? "Yes" : "No"}
+            </p>
+          </div>
+
+          {/* Add to Cart */}
           <button
             className="mt-8 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 active:scale-95"
           >
@@ -88,9 +98,7 @@ function ProductDetails() {
           </button>
 
         </div>
-
       </div>
-
     </div>
   );
 }
