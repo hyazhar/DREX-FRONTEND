@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import Poster from  '../../assets/Poster.png';
 function Hero() {
   const navigate = useNavigate();
 
@@ -90,7 +90,7 @@ function Hero() {
             <div className="absolute w-72 h-72 sm:w-96 sm:h-96 bg-blue-600/20 blur-3xl rounded-full"></div>
 
             <img
-              src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=900&q=80"
+              src={Poster}
               alt="Sports equipment"
               className="relative w-full max-w-lg h-[350px] sm:h-[450px] object-cover rounded-3xl border border-blue-500/20 shadow-2xl shadow-blue-900/30"
             />
