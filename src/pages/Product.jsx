@@ -13,6 +13,7 @@ function Product() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = searchParams.get("category") || "";
+  const searchQuery = searchParams.get("search") || "";
   const currentPage = Number(searchParams.get("page")) || 1;
   const [totalPages, setTotalPages] = useState(1);
 
@@ -47,6 +48,7 @@ function Product() {
         const data = await productApi.getdata({
           page: currentPage,
           category: selectedCategoryData?._id || "",
+          search: searchQuery,
         });
 
         if (cancelled) return;
@@ -69,7 +71,7 @@ function Product() {
     return () => {
       cancelled = true;
     };
-  }, [currentPage, selectedCategory, categories, categoryLoading]);
+  }, [currentPage, selectedCategory, categories, categoryLoading,searchQuery]);
 
   useEffect(() => {
     async function fetchCategories() {

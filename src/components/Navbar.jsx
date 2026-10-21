@@ -1,24 +1,31 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Menu, X, Search, TrendingUp, ShoppingBag } from "lucide-react";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+
+  useEffect(() => { 
+  setSearch(searchParams.get("search") || "");
+}, [searchParams]);
+
+function handleSearch(e) {
+  e.preventDefault();
+  const newParams = new URLSearchParams(searchParams);
+  if (search.trim()) {
+    newParams.set("search", search.trim());
+  } else {
+    newParams.delete("search");
+  }
+  newParams.delete("page");
+  setSearchParams(newParams);
+}
 
   const closeMenu = () => {
     setIsMenuOpen(false);
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-
-    if (!search.trim()) return;
-
-    console.log("Searching for:", search);
-
-    // Later you can navigate to:
-    // /product?search=searchValue
   };
 
   return (
@@ -56,6 +63,7 @@ function Navbar() {
               />
 
               <button
+                onClick={handleSearch}
                 type="submit"
                 className="mr-1 rounded-full bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
               >
