@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  ShoppingCart,
-  Heart,
-  Minus,
-  Plus,
-  ArrowLeft,
-  Package,
-} from "lucide-react";
+import {ShoppingCart,Heart,Minus,Plus,ArrowLeft,Package,} from "lucide-react";
 
 import productApi from "../services/productApi";
 import Loader from "../components/Loader";
