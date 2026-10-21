@@ -16,32 +16,60 @@ function Product() {
   const currentPage = Number(searchParams.get("page")) || 1;
   const [totalPages, setTotalPages] = useState(1);
 
-  function handleCategorySelect(categoryId) {
+  function handleCategorySelect(categoryName) {
     const newParams = new URLSearchParams(searchParams);
-    if (selectedCategory === categoryId) {
+    const selectedName = searchParams.get("category") || "";
+    if (selectedName === categoryName) {
       newParams.delete("category");
     } else {
-      newParams.set("category", categoryId);
+      newParams.set("category", categoryName);
     }
     newParams.delete("page");
     setSearchParams(newParams);
   }
 
   useEffect(() => {
+    if (categoryLoading) return;
+    let cancelled = false;
     async function fetchProducts() {
       try {
-        const data = await productApi.getdata(currentPage);
-        setProducts(data.products);
-        setTotalPages(data.totalPages);
+        setLoading(true);
+        setError("");
+        const selectedCategoryData = categories.find(
+          (item) => item.name.toLowerCase() === selectedCategory.toLowerCase(),
+        );
+        if (selectedCategory && !selectedCategoryData) {
+          setProducts([]);
+          setTotalPages(1);
+          return;
+        }
+
+        const data = await productApi.getdata({
+          page: currentPage,
+          category: selectedCategoryData?._id || "",
+        });
+
+        if (cancelled) return;
+
+        setProducts(data.products ?? []);
+        setTotalPages(Number(data.totalPages) || 1);
       } catch (error) {
+        if (cancelled) return;
+
         console.error("Error fetching products:", error);
-        setError("Unable to load products.Please Try Again");
+        setError("Unable to load products. Please try again.");
+        setProducts([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
     fetchProducts();
-  }, [currentPage]);
+    return () => {
+      cancelled = true;
+    };
+  }, [currentPage, selectedCategory, categories, categoryLoading]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -118,9 +146,9 @@ function Product() {
                 <button
                   key={category._id}
                   type="button"
-                  onClick={() => handleCategorySelect(category._id)}
+                  onClick={() => handleCategorySelect(category.name)}
                   className={`cursor-pointer rounded-full border px-5 py-2.5 text-sm font-semibold transition ${
-                    selectedCategory === category._id
+                    selectedCategory === category.name
                       ? "border-blue-600 bg-blue-600 text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:border-blue-600 hover:text-blue-600"
                   }`}
