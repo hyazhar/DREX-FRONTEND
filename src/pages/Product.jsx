@@ -6,12 +6,13 @@ import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Product() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryLoading, setCategoryLoading] = useState(true);
+  const [selectedSubCategory, setSelectedSubCategory]= useState(searchParams.get("subCategory")||"")
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = searchParams.get("category") || "";
   const searchQuery = searchParams.get("search") || "";
   const currentPage = Number(searchParams.get("page")) || 1;
@@ -28,7 +29,21 @@ function Product() {
     newParams.delete("page");
     setSearchParams(newParams);
   }
+  const subCategories= [
+    ...new Set(products.map((product)=>product.subCategory).filter(Boolean),)
+  ];
 
+  function handleSubCategorySelect(subCategory) {
+  const newParams = new URLSearchParams(searchParams);
+  if (selectedSubCategory === subCategory) {
+    newParams.delete("subCategory");
+  } else {
+    newParams.set("subCategory", subCategory);
+  }
+  newParams.delete("page");
+
+  setSearchParams(newParams);
+}
   useEffect(() => {
     if (categoryLoading) return;
     let cancelled = false;
@@ -162,7 +177,30 @@ function Product() {
           )}
         </div>
       </section>
+          {!loading && subCategories.length > 0 && (
+  <div className="mb-6">
+    <h3 className="mb-3 text-lg font-semibold text-gray-800">
+      Subcategories
+    </h3>
 
+    <div className="flex flex-wrap gap-3">
+      {subCategories.map((subCategory) => (
+        <button
+          key={subCategory}
+          type="button"
+          onClick={() => handleSubCategorySelect(subCategory)}
+          className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+            selectedSubCategory === subCategory
+              ? "border-blue-600 bg-blue-600 text-white"
+              : "border-gray-300 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600"
+          }`}
+        >
+          {subCategory}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
       {/* Products Section */}
       <main className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
