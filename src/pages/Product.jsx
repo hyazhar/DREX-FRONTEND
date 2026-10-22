@@ -10,7 +10,7 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryLoading, setCategoryLoading] = useState(true);
-  const [selectedSubCategory, setSelectedSubCategory]= useState(searchParams.get("subCategory")||"")
+  const selectedSubCategory = searchParams.get("subCategory") || "";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const selectedCategory = searchParams.get("category") || "";
@@ -33,13 +33,17 @@ function Product() {
     ...new Set(products.map((product)=>product.subCategory).filter(Boolean),)
   ];
 
-  function handleSubCategorySelect(subCategory) {
+ function handleSubCategorySelect(subCategory) {
   const newParams = new URLSearchParams(searchParams);
-  if (selectedSubCategory === subCategory) {
+
+  const currentSubCategory = newParams.get("subCategory") || "";
+
+  if (currentSubCategory === subCategory) {
     newParams.delete("subCategory");
   } else {
     newParams.set("subCategory", subCategory);
   }
+
   newParams.delete("page");
 
   setSearchParams(newParams);
@@ -64,6 +68,7 @@ function Product() {
           page: currentPage,
           category: selectedCategoryData?._id || "",
           search: searchQuery,
+          subCategory: selectedSubCategory,
         });
 
         if (cancelled) return;
@@ -86,7 +91,7 @@ function Product() {
     return () => {
       cancelled = true;
     };
-  }, [currentPage, selectedCategory, categories, categoryLoading,searchQuery]);
+  }, [currentPage, selectedCategory, categories, categoryLoading,searchQuery,selectedSubCategory]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -266,9 +271,11 @@ function Product() {
                 {/* Previous Button */}
                 <button
                   type="button"
-                  onClick={() =>
-                    setSearchParams({ page: String(currentPage - 1) })
-                  }
+                  onClick={() => {
+  const newParams = new URLSearchParams(searchParams);
+  newParams.set("page", String(currentPage - 1));
+  setSearchParams(newParams);
+}}
                   disabled={currentPage === 1}
                   className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition duration-200 hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white disabled:hover:text-gray-700"
                 >
@@ -284,9 +291,11 @@ function Product() {
                 {/* Next Button */}
                 <button
                   type="button"
-                  onClick={() =>
-                    setSearchParams({ page: String(currentPage + 1) })
-                  }
+                  onClick={() => {
+  const newParams = new URLSearchParams(searchParams);
+  newParams.set("page", String(currentPage + 1));
+  setSearchParams(newParams);
+}}
                   disabled={currentPage >= totalPages}
                   className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition duration-200 hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white disabled:hover:text-gray-700"
                 >
