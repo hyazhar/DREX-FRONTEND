@@ -29,25 +29,25 @@ function Product() {
     newParams.delete("page");
     setSearchParams(newParams);
   }
-  const subCategories= [
-    ...new Set(products.map((product)=>product.subCategory).filter(Boolean),)
+  const subCategories = [
+    ...new Set(products.map((product) => product.subCategory).filter(Boolean)),
   ];
 
- function handleSubCategorySelect(subCategory) {
-  const newParams = new URLSearchParams(searchParams);
+  function handleSubCategorySelect(subCategory) {
+    const newParams = new URLSearchParams(searchParams);
 
-  const currentSubCategory = newParams.get("subCategory") || "";
+    const currentSubCategory = newParams.get("subCategory") || "";
 
-  if (currentSubCategory === subCategory) {
-    newParams.delete("subCategory");
-  } else {
-    newParams.set("subCategory", subCategory);
+    if (currentSubCategory === subCategory) {
+      newParams.delete("subCategory");
+    } else {
+      newParams.set("subCategory", subCategory);
+    }
+
+    newParams.delete("page");
+
+    setSearchParams(newParams);
   }
-
-  newParams.delete("page");
-
-  setSearchParams(newParams);
-}
   useEffect(() => {
     if (categoryLoading) return;
     let cancelled = false;
@@ -91,7 +91,14 @@ function Product() {
     return () => {
       cancelled = true;
     };
-  }, [currentPage, selectedCategory, categories, categoryLoading,searchQuery,selectedSubCategory]);
+  }, [
+    currentPage,
+    selectedCategory,
+    categories,
+    categoryLoading,
+    searchQuery,
+    selectedSubCategory,
+  ]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -182,30 +189,30 @@ function Product() {
           )}
         </div>
       </section>
-          {!loading && subCategories.length > 0 && (
-  <div className="mb-6">
-    <h3 className="mb-3 text-lg font-semibold text-gray-800">
-      Subcategories
-    </h3>
+      {!loading && subCategories.length > 0 && (
+        <div className="mb-6">
+          <h3 className="mb-3 text-lg font-semibold text-gray-800">
+            Subcategories
+          </h3>
 
-    <div className="flex flex-wrap gap-3">
-      {subCategories.map((subCategory) => (
-        <button
-          key={subCategory}
-          type="button"
-          onClick={() => handleSubCategorySelect(subCategory)}
-          className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-            selectedSubCategory === subCategory
-              ? "border-blue-600 bg-blue-600 text-white"
-              : "border-gray-300 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600"
-          }`}
-        >
-          {subCategory}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
+          <div className="flex flex-wrap gap-3">
+            {subCategories.map((subCategory) => (
+              <button
+                key={subCategory}
+                type="button"
+                onClick={() => handleSubCategorySelect(subCategory)}
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  selectedSubCategory === subCategory
+                    ? "border-blue-600 bg-blue-600 text-white"
+                    : "border-gray-300 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600"
+                }`}
+              >
+                {subCategory}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       {/* Products Section */}
       <main className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -272,10 +279,10 @@ function Product() {
                 <button
                   type="button"
                   onClick={() => {
-  const newParams = new URLSearchParams(searchParams);
-  newParams.set("page", String(currentPage - 1));
-  setSearchParams(newParams);
-}}
+                    const newParams = new URLSearchParams(searchParams);
+                    newParams.set("page", String(currentPage - 1));
+                    setSearchParams(newParams);
+                  }}
                   disabled={currentPage === 1}
                   className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition duration-200 hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white disabled:hover:text-gray-700"
                 >
@@ -292,10 +299,10 @@ function Product() {
                 <button
                   type="button"
                   onClick={() => {
-  const newParams = new URLSearchParams(searchParams);
-  newParams.set("page", String(currentPage + 1));
-  setSearchParams(newParams);
-}}
+                    const newParams = new URLSearchParams(searchParams);
+                    newParams.set("page", String(currentPage + 1));
+                    setSearchParams(newParams);
+                  }}
                   disabled={currentPage >= totalPages}
                   className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition duration-200 hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white disabled:hover:text-gray-700"
                 >
