@@ -189,8 +189,6 @@ function Register() {
 
       setErrors({});
     } catch (error) {
-      console.error("Registration error:", error);
-
       setServerError(error.message || "Registration failed. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -428,7 +426,7 @@ function Register() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Creating Account..." : "Create Account"}
             </button>

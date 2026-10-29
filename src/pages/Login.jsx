@@ -109,8 +109,6 @@ function Login() {
 
       setErrors({});
     } catch (error) {
-      console.error("Login request failed:", error);
-
       setServerError(error.message || "Login failed. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -255,10 +253,9 @@ function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <LogIn size={18} />
-
               {isSubmitting ? "Logging In..." : "Log In"}
             </button>
           </form>

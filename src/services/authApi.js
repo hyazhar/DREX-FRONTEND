@@ -1,39 +1,66 @@
 const API_URL = "http://localhost:3000/api/auth";
 
-async function register(userData) {
-  const response = await fetch(`${API_URL}/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
+async function sendAuthRequest(endpoint, payload, fallbackMessage) {
+  let response;
 
-  const data = await response.json();
+  // Handle network errors
+  try {
+    response = await fetch(`${API_URL}/${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(
+      "Unable to connect to the server. Please check your connection and try again."
+    );
+  }
 
+  // Safely parse the response
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    // The server may return an empty body or invalid JSON.
+  }
+
+  // Handle unsuccessful HTTP responses
   if (!response.ok) {
-    throw new Error(data.message || "Registration failed");
+    const message =
+      data?.message ||
+      data?.error ||
+      `${fallbackMessage} (HTTP ${response.status})`;
+
+    throw new Error(message);
+  }
+
+  // Ensure a usable response was returned
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
+    throw new Error(
+      "The server returned an unexpected response. Please try again."
+    );
   }
 
   return data;
 }
 
+async function register(userData) {
+  return sendAuthRequest(
+    "register",
+    userData,
+    "Registration failed"
+  );
+}
+
 async function login(credentials) {
-  const response = await fetch(`${API_URL}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Login failed");
-  }
-
-  return data;
+  return sendAuthRequest(
+    "login",
+    credentials,
+    "Login failed"
+  );
 }
 
 const authApi = {
