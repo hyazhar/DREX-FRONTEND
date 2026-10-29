@@ -119,7 +119,7 @@ function Navbar() {
 
             {/* Signup */}
             <Link
-              to="/signup"
+              to="/register"
               className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
             >
               Signup
@@ -259,7 +259,7 @@ function Navbar() {
           </Link>
 
           <Link
-            to="/signup"
+            to="/register"
             onClick={closeMenu}
             tabIndex={isMenuOpen ? 0 : -1}
             className="w-full rounded-lg bg-blue-600 py-2.5 text-center font-medium text-white transition hover:bg-blue-700"

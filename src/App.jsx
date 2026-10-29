@@ -15,6 +15,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsConditions from './pages/TermsConditions'
 import SiteMap from './pages/SiteMap'
 import ProductDetails from './pages/ProductDetails'
+import Register from './pages/Register';
+import Login from './pages/Login';
 import ScrollToTop from './ScrollToTop';
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
+        <Route path='/register' element={<Register/>}></Route>
+        <Route path='/login' element={<Login/>}></Route>
         <Route path='/products' element={<Product/>}></Route>
         <Route path='/products/:id' element={<ProductDetails/>}></Route>
         <Route path='/contact' element={<Contact/>}></Route>
