@@ -1,206 +1,75 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { useForm } from "react-hook-form";
 import authApi from "../services/authApi";
 
 function Register() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  function validateFormWithData(data) {
-    const newErrors = {};
 
-    const trimmedName = data.name.trim();
-    const trimmedEmail = data.email.trim();
-
-    if (!trimmedName) {
-      newErrors.name = "Full name is required.";
-    } else if (trimmedName.length < 2) {
-      newErrors.name = "Name must contain at least 2 characters.";
-    } else if (trimmedName.length > 50) {
-      newErrors.name = "Name cannot exceed 50 characters.";
-    }
-
-    if (!trimmedEmail) {
-      newErrors.email = "Email address is required.";
-    } else if (
-      trimmedEmail.length > 254 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
-    ) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    if (!data.password) {
-      newErrors.password = "Password is required.";
-    } else if (data.password.length < 8) {
-      newErrors.password = "Password must contain at least 8 characters.";
-    } else if (data.password.length > 128) {
-      newErrors.password = "Password cannot exceed 128 characters.";
-    } else if (!/[a-z]/.test(data.password)) {
-      newErrors.password = "Include at least one lowercase letter.";
-    } else if (!/[A-Z]/.test(data.password)) {
-      newErrors.password = "Include at least one uppercase letter.";
-    } else if (!/[0-9]/.test(data.password)) {
-      newErrors.password = "Include at least one number.";
-    }
-
-    if (!data.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password.";
-    } else if (data.password !== data.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
-    }
-
-    return newErrors;
-  }
-
-  // Update form fields
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    const updatedFormData = {
-      ...formData,
-      [name]: value,
-    };
-
-    setFormData(updatedFormData);
-    setSuccessMessage("");
-
-    const validationErrors = validateFormWithData(updatedFormData);
-
-    setErrors((previousErrors) => ({
-      ...previousErrors,
-      [name]: validationErrors[name] || "",
-      ...(name === "password"
-        ? {
-            confirmPassword:
-              updatedFormData.confirmPassword &&
-              updatedFormData.password !== updatedFormData.confirmPassword
-                ? "Passwords do not match."
-                : "",
-          }
-        : {}),
-    }));
-  }
-
-  // Validate form data
-  function validateForm() {
-    const newErrors = {};
-
-    // Full name validation
-    const trimmedName = formData.name.trim();
-
-    if (!trimmedName) {
-      newErrors.name = "Full name is required.";
-    } else if (trimmedName.length < 2) {
-      newErrors.name = "Name must contain at least 2 characters.";
-    } else if (trimmedName.length > 50) {
-      newErrors.name = "Name cannot exceed 50 characters.";
-    }
-
-    // Email validation
-    const trimmedEmail = formData.email.trim();
-
-    if (!trimmedEmail) {
-      newErrors.email = "Email address is required.";
-    } else if (
-      trimmedEmail.length > 254 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
-    ) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = "Password is required.";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must contain at least 8 characters.";
-    } else if (formData.password.length > 128) {
-      newErrors.password = "Password cannot exceed 128 characters.";
-    } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password = "Include at least one lowercase letter.";
-    } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password = "Include at least one uppercase letter.";
-    } else if (!/[0-9]/.test(formData.password)) {
-      newErrors.password = "Include at least one number.";
-    }
-
-    // Confirm password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password.";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
-    }
-
-    return newErrors;
-  }
-
-  // Handle registration form submission
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    // Prevent duplicate requests
-    if (isSubmitting) return;
-
-    setServerError("");
-    setSuccessMessage("");
-
-    // Validate the form before making an API request
-    const validationErrors = validateForm();
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) {
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-
-      // Send registration details to the backend
-      const response = await authApi.register({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        password: formData.password,
-      });
-
-      console.log("Registration successful:", response);
-
-      setSuccessMessage(
-        response.message || "Registration successful! You can now log in.",
-      );
-
-      // Clear the form after successful registration
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-
-      setErrors({});
-    } catch (error) {
-      setServerError(error.message || "Registration failed. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    trigger,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const inputClass =
     "w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100";
 
+  // Clear messages when user edits the form
+  function clearMessages() {
+    setServerError("");
+    setSuccessMessage("");
+  }
+
+  // Handle registration submission
+  async function onSubmit(data) {
+    clearMessages();
+
+    try {
+      const response = await authApi.register({
+        name: data.name.trim(),
+        email: data.email.trim(),
+        password: data.password,
+      });
+
+      setSuccessMessage(
+        response.message ||
+          "Registration successful! You can now log in."
+      );
+
+      // Clear form after successful registration
+      reset();
+
+      setShowPassword(false);
+      setShowConfirmPassword(false);
+
+    } catch (error) {
+      setServerError(
+        error.message || "Registration failed. Please try again."
+      );
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10">
       <div className="w-full max-w-md">
+
         {/* Brand */}
         <div className="mb-6 text-center">
           <Link
@@ -217,6 +86,7 @@ function Register() {
 
         {/* Registration Card */}
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:p-8">
+
           <div className="mb-6 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-700">
               <UserPlus size={28} />
@@ -232,7 +102,12 @@ function Register() {
           </div>
 
           {/* Registration Form */}
-          <form onSubmit={handleSubmit} noValidate className="space-y-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="space-y-5"
+          >
+
             {/* Full Name */}
             <div>
               <label
@@ -244,22 +119,41 @@ function Register() {
 
               <input
                 id="name"
-                name="name"
                 type="text"
                 autoComplete="name"
                 placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
+                {...register("name", {
+                  setValueAs: (value) => value.trim(),
+
+                  required: "Full name is required.",
+
+                  minLength: {
+                    value: 2,
+                    message: "Name must contain at least 2 characters.",
+                  },
+
+                  maxLength: {
+                    value: 50,
+                    message: "Name cannot exceed 50 characters.",
+                  },
+
+                  onChange: clearMessages,
+                })}
                 aria-invalid={Boolean(errors.name)}
-                aria-describedby={errors.name ? "name-error" : undefined}
+                aria-describedby={
+                  errors.name ? "name-error" : undefined
+                }
                 className={`${inputClass} ${
                   errors.name ? "border-red-500 focus:border-red-500" : ""
                 }`}
               />
 
               {errors.name && (
-                <p id="name-error" className="mt-1 text-sm text-red-600">
-                  {errors.name}
+                <p
+                  id="name-error"
+                  className="mt-1 text-sm text-red-600"
+                >
+                  {errors.name.message}
                 </p>
               )}
             </div>
@@ -275,22 +169,41 @@ function Register() {
 
               <input
                 id="email"
-                name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
-                value={formData.email}
-                onChange={handleChange}
+                {...register("email", {
+                  setValueAs: (value) => value.trim(),
+
+                  required: "Email address is required.",
+
+                  maxLength: {
+                    value: 254,
+                    message: "Email address is too long.",
+                  },
+
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address.",
+                  },
+
+                  onChange: clearMessages,
+                })}
                 aria-invalid={Boolean(errors.email)}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={
+                  errors.email ? "email-error" : undefined
+                }
                 className={`${inputClass} ${
                   errors.email ? "border-red-500 focus:border-red-500" : ""
                 }`}
               />
 
               {errors.email && (
-                <p id="email-error" className="mt-1 text-sm text-red-600">
-                  {errors.email}
+                <p
+                  id="email-error"
+                  className="mt-1 text-sm text-red-600"
+                >
+                  {errors.email.message}
                 </p>
               )}
             </div>
@@ -307,34 +220,79 @@ function Register() {
               <div className="relative">
                 <input
                   id="password"
-                  name="password"
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="Create a password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  {...register("password", {
+                    required: "Password is required.",
+
+                    minLength: {
+                      value: 8,
+                      message: "Password must contain at least 8 characters.",
+                    },
+
+                    maxLength: {
+                      value: 128,
+                      message: "Password cannot exceed 128 characters.",
+                    },
+
+                    validate: {
+                      lowercase: (value) =>
+                        /[a-z]/.test(value) ||
+                        "Include at least one lowercase letter.",
+
+                      uppercase: (value) =>
+                        /[A-Z]/.test(value) ||
+                        "Include at least one uppercase letter.",
+
+                      number: (value) =>
+                        /[0-9]/.test(value) ||
+                        "Include at least one number.",
+                    },
+
+                    onChange: () => {
+                      clearMessages();
+
+                      if (getValues("confirmPassword")) {
+                        trigger("confirmPassword");
+                      }
+                    },
+                  })}
                   aria-invalid={Boolean(errors.password)}
                   aria-describedby={
                     errors.password ? "password-error" : undefined
                   }
                   className={`${inputClass} pr-12 ${
-                    errors.password ? "border-red-500 focus:border-red-500" : ""
+                    errors.password
+                      ? "border-red-500 focus:border-red-500"
+                      : ""
                   }`}
                 />
 
                 <button
                   type="button"
-                  onClick={() => setShowPassword((previous) => !previous)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() =>
+                    setShowPassword((previous) => !previous)
+                  }
+                  aria-label={
+                    showPassword ? "Hide password" : "Show password"
+                  }
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
 
               {errors.password && (
-                <p id="password-error" className="mt-1 text-sm text-red-600">
-                  {errors.password}
+                <p
+                  id="password-error"
+                  className="mt-1 text-sm text-red-600"
+                >
+                  {errors.password.message}
                 </p>
               )}
 
@@ -355,12 +313,18 @@ function Register() {
               <div className="relative">
                 <input
                   id="confirmPassword"
-                  name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="Enter your password again"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password.",
+
+                    validate: (value) =>
+                      value === getValues("password") ||
+                      "Passwords do not match.",
+
+                    onChange: clearMessages,
+                  })}
                   aria-invalid={Boolean(errors.confirmPassword)}
                   aria-describedby={
                     errors.confirmPassword
@@ -399,7 +363,7 @@ function Register() {
                   id="confirm-password-error"
                   className="mt-1 text-sm text-red-600"
                 >
-                  {errors.confirmPassword}
+                  {errors.confirmPassword.message}
                 </p>
               )}
             </div>
@@ -413,6 +377,7 @@ function Register() {
                 {successMessage}
               </div>
             )}
+
             {/* Backend Error */}
             {serverError && (
               <div
@@ -422,6 +387,7 @@ function Register() {
                 {serverError}
               </div>
             )}
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -430,6 +396,7 @@ function Register() {
             >
               {isSubmitting ? "Creating Account..." : "Create Account"}
             </button>
+
           </form>
 
           {/* Login Link */}
@@ -442,12 +409,14 @@ function Register() {
               Log in
             </Link>
           </p>
+
         </div>
 
         {/* Footer */}
         <p className="mt-6 text-center text-xs text-gray-400">
           © {new Date().getFullYear()} DREX. All rights reserved.
         </p>
+
       </div>
     </div>
   );
